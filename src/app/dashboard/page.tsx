@@ -8,7 +8,6 @@ async function page(){
     if(!user || !user.id) redirect('/auth-callback?origin=dashboard')
     
 
-    console.log(user)
     return (
     <div> {user?.email} </div>
     );
