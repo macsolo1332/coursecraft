@@ -12,7 +12,7 @@ export const appRouter = router({
       throw new TRPCError({ code: 'UNAUTHORIZED'})
     }
   // check if the user is in the database
-  return {success : true}
+  return { success : true }
 
   })
   
