@@ -1,20 +1,22 @@
+"use client"
+
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { trpc } from '../_trpc/client';
 import { Loader2 } from 'lucide-react';
-
 
 const Page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const origin = searchParams.get('origin');
 
-    useEffect(() => {
-        const { data, error } = trpc.authCallback.useQuery(undefined, {
-            retry: true,
-            retryDelay: 500,
-        });
+   
+    const { data, error } = trpc.authCallback.useQuery(undefined, {
+        retry: true,
+        retryDelay: 500,
+    });
 
+    useEffect(() => {
         if (error) {
             if (error.data?.code === 'UNAUTHORIZED') {
                 router.push('/sign-in');
@@ -22,7 +24,7 @@ const Page = () => {
         } else if (data && data.success) {
             router.push(origin ? `/${origin}` : '/dashboard');
         }
-    }, [router, origin]);
+    }, [router, origin, data, error]); 
 
     return (
         <div className='w-full mt-24 flex justify-center'>
