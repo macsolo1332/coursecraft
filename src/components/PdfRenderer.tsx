@@ -9,6 +9,10 @@ import { ChevronDown, Loader2 } from "lucide-react"
 import { useResizeDetector } from 'react-resize-detector'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
+import { fileURLToPath } from "url"
+import { useState } from 'react'
+// import { useForm } from 'react-hook-form'
+// import { z } from 'zod'
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
@@ -21,6 +25,8 @@ interface PdfRendererProps {
 const PdfRenderer = ({url}: PdfRendererProps) => {
     const { toast } = useToast()
     const { width, ref } = useResizeDetector()
+    
+console.log({url})
 
     return(
         <div className='w-full bg-white rounded-md shadow flex flex-col items-center'>
@@ -43,8 +49,9 @@ const PdfRenderer = ({url}: PdfRendererProps) => {
               //   }
               // }}
             />
+          
 
-               </div>
+             </div>
             </div>
             </div>
             <div className='flex-1 w-full max-h-screen'>
@@ -71,8 +78,10 @@ const PdfRenderer = ({url}: PdfRendererProps) => {
                 width={width ? width : 1}
                 pageNumber={1} 
                 />
+                
 
                 </Document>
+                
             </div>
           </div>
         </div>
