@@ -2,7 +2,7 @@ import Link from 'next/link'
 import MaxWidthWrapper from "./MaxWidthWrapper"
 import Image from 'next/image'
 import { buttonVariants } from './ui/button'
-import { LoginLink,RegisterLink } from '@kinde-oss/kinde-auth-nextjs/server'
+import { LoginLink,LogoutLink,RegisterLink } from '@kinde-oss/kinde-auth-nextjs/server'
 import { ArrowRight } from 'lucide-react'
 
 
@@ -43,6 +43,12 @@ const Navbar = () => {
                   })}>
                   Sign in
             </LoginLink>
+
+            <LogoutLink 
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}>Logout</LogoutLink>
             <RegisterLink
                   className={buttonVariants({
                     size: 'sm',
