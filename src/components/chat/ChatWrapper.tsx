@@ -1,18 +1,20 @@
 'use client'
 
 import { trpc } from '@/app/_trpc/client'
-import { Loader2, XCircle } from "lucide-react"
+import { ChevronLeft, Loader2, XCircle } from "lucide-react"
 import Messages from "./Messages"
 import ChatInput from "./ChatInput"
+import Link from 'next/link'
+import { buttonVariants } from '../ui/button'
 
 
 interface ChatWrapperProps {
     fileId: string
-    isSubscribed: boolean
+    // isSubscribed: boolean
     
   }
 
-const ChatWrapper = (  { fileId, isSubscribed, }: ChatWrapperProps) => {
+const ChatWrapper = (  { fileId,  }: ChatWrapperProps) => {
 
     const  {data , isLoading } = trpc.getFileUploadStatus.useQuery(
       {
@@ -25,6 +27,7 @@ const ChatWrapper = (  { fileId, isSubscribed, }: ChatWrapperProps) => {
             : 500,
       }
     )
+    
     if (isLoading)
     return(
       <div className='relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2'>
@@ -75,11 +78,25 @@ const ChatWrapper = (  { fileId, isSubscribed, }: ChatWrapperProps) => {
           <p className='text-zinc-500 text-sm'>
             Your{' '}
             <span className='font-medium'>
-              {isSubscribed ? 'Pro' : 'Free'}
+              {/* {isSubscribed ? 'Pro' : 'Free'} */}
             </span>{' '}
-            plan supports up to  5 pages per PDF.
+            plan supports up to{' '}
+            {/* {isSubscribed
+              ? PLANS.find((p) => p.name === 'Pro')
+                  ?.pagesPerPdf
+              : PLANS.find((p) => p.name === 'Free')
+                  ?.pagesPerPdf}{' '} */}
+            pages per PDF.
           </p>
-         
+          <Link
+            href='/dashboard'
+            className={buttonVariants({
+              variant: 'secondary',
+              className: 'mt-4',
+            })}>
+            <ChevronLeft className='h-3 w-3 mr-1.5' />
+            Back
+          </Link>
         </div>
       </div>
 
@@ -91,17 +108,17 @@ const ChatWrapper = (  { fileId, isSubscribed, }: ChatWrapperProps) => {
 
     console.log(data)
     return (
-       
+        // <ChatContextProvider fileId={fileId}>
       <div className='relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2'>
         <div className='flex-1 justify-between flex flex-col mb-28'>
           <Messages 
-       
+        //   fileId={fileId} 
           />
         </div>
 
         <ChatInput />
       </div>
-    
+    // </ChatContextProvider>
     )
     
 
