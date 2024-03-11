@@ -13,21 +13,25 @@ interface ChatWrapperProps {
     // isSubscribed: boolean
     
   }
+ 
 
 const ChatWrapper = (  { fileId,  }: ChatWrapperProps) => {
-
-    const  {data , isLoading } = trpc.getFileUploadStatus.useQuery(
-      {
-        fileId,
-      },
-      {
-        refetchInterval: (data) =>
-          data?.status === 'SUCCESS' || data?.status === 'FAILED'
-            ? false
-            : 500,
-      }
+  
+  
+    const  {data , isLoading } = trpc.getFileUploadStatus.useQuery({
+      fileId,
+    },
+    // {
+    //     refetchInterval: (data) =>
+    //       data?.status === 'SUCCESS' ||
+    //       data?.status === 'FAILED'
+    //         ? false
+    //         : 500,
+    //   }
     )
-    
+    console.log(data?.status)
+
+
     if (isLoading)
     return(
       <div className='relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2'>
