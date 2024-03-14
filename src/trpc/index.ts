@@ -3,6 +3,7 @@ import { privateProcedure, publicProcedure, router } from './trpc';
 import { TRPCError } from '@trpc/server';
 import { db } from '@/db';
 import { z } from 'zod';
+
  
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -43,6 +44,7 @@ export const appRouter = router({
     })
   }),
 
+  
   getFileUploadStatus: privateProcedure
     .input(z.object({ fileId: z.string() }))
     .query(async ({ input, ctx }) => {
