@@ -10,7 +10,7 @@ import { buttonVariants } from '../ui/button'
 
 interface ChatWrapperProps {
     fileId: string
-    // isSubscribed: boolean
+   
     
   }
  
@@ -21,13 +21,10 @@ const ChatWrapper = (  { fileId,  }: ChatWrapperProps) => {
     const  {data , isLoading } = trpc.getFileUploadStatus.useQuery({
       fileId,
     },
-    // {
-    //     refetchInterval: (data) =>
-    //       data?.status === 'SUCCESS' ||
-    //       data?.status === 'FAILED'
-    //         ? false
-    //         : 500,
-    //   }
+    {
+       
+        retry: (failureCount, error) => true,
+      }
     )
     console.log(data?.status)
 
