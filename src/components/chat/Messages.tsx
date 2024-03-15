@@ -7,6 +7,7 @@ import Skeleton from 'react-loading-skeleton'
 import Message from "./Message"
 
 
+
 interface MessagesProps {
     fileId: string
   }
@@ -57,13 +58,22 @@ const Messages = ({ fileId }: MessagesProps) => {
             if (i === combinedMessages.length - 1) {
               return (
                 <Message
-                 
+                  // ref={ref}
+                  message={message}
+                  isNextMessageSamePerson={
+                    isNextMessageSamePerson
+                  }
+                  key={message.id}
                 />
               )
             } else
               return (
                 <Message
-                 
+                  message={message}
+                  isNextMessageSamePerson={
+                    isNextMessageSamePerson
+                  }
+                  key={message.id}
                 />
               )
           })
