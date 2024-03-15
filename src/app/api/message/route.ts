@@ -8,6 +8,7 @@ import { PineconeStore } from "@langchain/pinecone";
 
 import { NextRequest } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from 'ai'
+import { Pinecone } from "@pinecone-database/pinecone";
 
 export const POST = async (req: NextRequest) => {
     // endpoint for asking a question to pdf
@@ -44,8 +45,11 @@ export const POST = async (req: NextRequest) => {
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY,
     })
-    const pine = pinecone
-    const pineconeIndex = index
+    const pinecone = new Pinecone({
+      apiKey: process.env.PINECONE_API_KEY!,
+    });
+
+    const pineconeIndex = pinecone.index('coursecraft');
 
     const vectorStore = await PineconeStore.fromExistingIndex(
       embeddings,
