@@ -58,7 +58,7 @@ export const appRouter = router({
 
       const dbUser = await db.user.findFirst({
         where: {
-          id: userId,
+          id : userId,
         },
       })
 
