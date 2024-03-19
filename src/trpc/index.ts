@@ -50,24 +50,24 @@ export const appRouter = router({
   createStripeSession: privateProcedure.mutation(
     async ({ ctx }) => {
       const { userId } = ctx
-
       const billingUrl = absoluteUrl('/dashboard/billing')
-
-      if (!userId)
+      if (!userId) {
         throw new TRPCError({ code: 'UNAUTHORIZED' })
+      }
 
       const dbUser = await db.user.findFirst({
         where: {
           id : userId,
         },
       })
-
-      if (!dbUser)
+      console.log(`DBUSer: ${dbUser ? JSON.stringify(dbUser, null, 2): 'Not found'}`)
+      if (!dbUser) {
         throw new TRPCError({ code: 'UNAUTHORIZED' })
+      }
 
-      const subscriptionPlan =
-        await getUserSubscriptionPlan()
-
+      const subscriptionPlan = await getUserSubscriptionPlan()
+      console.log('Subscription')
+      console.log(subscriptionPlan)
       if (
         subscriptionPlan.isSubscribed &&
         dbUser.stripeCustomerId
@@ -77,15 +77,15 @@ export const appRouter = router({
             customer: dbUser.stripeCustomerId,
             return_url: billingUrl,
           })
-
+        console.log('Session fetched')
         return { url: stripeSession.url }
       }
-
-      const stripeSession =
+      try {
+        const stripeSession =
         await stripe.checkout.sessions.create({
           success_url: billingUrl,
           cancel_url: billingUrl,
-          payment_method_types: ['card', 'paypal'],
+          payment_method_types: ['card'],
           mode: 'subscription',
           billing_address_collection: 'auto',
           line_items: [
@@ -100,8 +100,13 @@ export const appRouter = router({
             userId: userId,
           },
         })
-
+      console.log('Session created')
       return { url: stripeSession.url }
+      } catch (e) {
+        console.error('Failed to create stripe session')
+        console.error(e)
+      }
+     
     }
   ),
 
