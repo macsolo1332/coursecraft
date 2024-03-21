@@ -123,7 +123,7 @@ export default function Home() {
                 Upload your PDF file
               </span>
               <span className='mt-2 text-zinc-700'>
-                We'll process your file and make it
+                We&apos;ll process your file and make it
                 ready for you to chat with else you can decide
                 what you will need to do.
               </span>
@@ -139,7 +139,7 @@ export default function Home() {
                 Start asking questions ?
               </span>
               <span className='mt-2 text-zinc-700'>
-                It's that simple. Try out C-Craft today -
+                It&apos;s that simple. Try out C-Craft today -
                 it really takes less than a minute.
               </span>
             </div>
