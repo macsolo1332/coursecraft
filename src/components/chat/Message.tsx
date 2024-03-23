@@ -1,17 +1,42 @@
 import { cn } from '@/lib/utils'
 import { ExtendedMessage } from '@/types/message'
 import { format } from 'date-fns'
-import { forwardRef } from 'react'
+import React, { forwardRef,useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Icons } from '../icons'
+import { Languages, Search } from 'lucide-react'
+import Translation from '../Translation'
+
 
 interface MessageProps {
   message: ExtendedMessage
   isNextMessageSamePerson: boolean
 }
 
+
+
+//   function generateTranslation() {
+//     if (translating || toLanguage === 'Select language') {
+//         return
+//     }
+
+//     setTranslating(true)
+
+//     worker.current.postMessage({
+//         text: output.map(val => val.text),
+//         src_lang: 'eng_Latn',
+//         tgt_lang: toLanguage
+//     })
+// }
+
+
 const Message = forwardRef<HTMLDivElement, MessageProps>(
-  ({ message, isNextMessageSamePerson }, ref) => {
+  ({  message, isNextMessageSamePerson }, ref) => {
+    // console.log("complete message",message)
+    const [translation, setTranslation] = useState<string | null>(null);
+  const [toLanguage, setToLanguage] = useState<string>('Select language');
+  const [translating, setTranslating] = useState<boolean | null>(null);
+  const [messageId, setMessageId] = useState<string>('');
     return (
       <div
         ref={ref}
@@ -58,6 +83,7 @@ const Message = forwardRef<HTMLDivElement, MessageProps>(
                 'rounded-bl-none':
                   !isNextMessageSamePerson &&
                   !message.isUserMessage,
+                  
               }
             )}>
             {typeof message.text === 'string' ? (
@@ -71,19 +97,23 @@ const Message = forwardRef<HTMLDivElement, MessageProps>(
               message.text
             )}
             {message.id !== 'loading-message' ? (
-              <div
-                className={cn(
-                  'text-xs select-none mt-2 w-full text-right',
-                  {
-                    'text-zinc-500': !message.isUserMessage,
-                    'text-blue-300': message.isUserMessage,
-                  }
-                )}>
-                {format(
-                  new Date(message.createdAt),
-                  'HH:mm'
+              <div className={cn('text-xs select-none mt-2 w-full text-right', {
+                'text-zinc-500': !message.isUserMessage,
+                'text-blue-300': message.isUserMessage,
+              })}>
+                {!message.isUserMessage ? (
+                  <React.Fragment>
+                    <Translation textElement={message.text as string} messageId={message.id} toLanguage={toLanguage} setToLanguage={setToLanguage} 
+                     />
+                    {format(new Date(message.createdAt), 'HH:mm')}
+                  </React.Fragment>
+                  
+                ) : (
+                  format(new Date(message.createdAt), 'HH:mm')
                 )}
+                
               </div>
+          
             ) : null}
           </div>
         </div>
