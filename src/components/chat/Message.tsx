@@ -14,22 +14,6 @@ interface MessageProps {
 }
 
 
-
-//   function generateTranslation() {
-//     if (translating || toLanguage === 'Select language') {
-//         return
-//     }
-
-//     setTranslating(true)
-
-//     worker.current.postMessage({
-//         text: output.map(val => val.text),
-//         src_lang: 'eng_Latn',
-//         tgt_lang: toLanguage
-//     })
-// }
-
-
 const Message = forwardRef<HTMLDivElement, MessageProps>(
   ({  message, isNextMessageSamePerson }, ref) => {
     // console.log("complete message",message)

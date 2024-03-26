@@ -5,8 +5,9 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import { Languages } from 'lucide-react';
-// import axios from "axios";
-// const nextTranslate=require('next-translate')
+import axios from "axios";
+import { url } from 'inspector';
+
 
 interface TranslationProps {
     messageId: string;
@@ -16,95 +17,38 @@ interface TranslationProps {
 }
 export const Translation: React.FC<TranslationProps> = (props: TranslationProps) => {
   const {messageId, textElement, toLanguage, setToLanguage } = props;
-  const [tab, setTab] = useState<'transcription' | 'translation'>('transcription');
   const [translation, setTranslation] = useState<string | null>(null);
   const [translating, setTranslating] = useState<boolean | null>(null);
-  // const worker = useRef<Worker | null>(null);
-
-  // useEffect(() => {
-  //   console.log(worker.current)
-  //   if (!worker.current) {
-  //     try {
-  //       worker.current = new Worker(new URL('../utils/translate.worker.js', import.meta.url),
-  //        {
-  //         type: 'module'
-  //     });
-  //     } catch (error) {
-  //       throw error
-  //     }
-  //   }
-
-  //   const onMessageReceived = async (e: MessageEvent) => {
-  //       console.log("console at translation layer",e.data)
-  //       switch (e.data.status) {
-  //           case 'initiate':
-  //               console.log('DOWNLOADING');
-  //               break;
-  //           case 'progress':
-  //               console.log('LOADING');
-  //               break;
-  //           case 'update':
-  //               console.log("output for aaaaa",e.data.output);
-  //               break;
-  //           case 'complete':
-  //               console.log("DONE");
-  //               break;
-  //       }
-  //   };
-
-    // worker.current.addEventListener('message', onMessageReceived);
-
-    // return () => worker.current!.removeEventListener('message', onMessageReceived);
-// }, []);
-
-// async function query() {
-//   const data="hello"
-// 	const response = await fetch(
-// 		"https://api-inference.huggingface.co/models/facebook/m2m100_418M",
-// 		{
-// 			headers: { Authorization: "Bearer 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" },
-// 			method: "POST",
-// 			body: JSON.stringify(data),
-// 		}
-// 	);
-// 	const result = await response.json();
-// 	console.log(result);
-// }
+ 
 
 
 const fetchTranslation = async () => {
-  const response = await axios({
-    method: "post",
-    url: "../utils/huggingface", 
-    data: { text: textElement, lang: 'en-es' }, // Sending the selected language to the backend
-    headers: { "Content-Type": "application/json" },
-  });
+  console.log("fetch");
+  const response = await axios.post('/api/translate',{ 
+     text: textElement, lang: toLanguage 
+    }, { 
+      headers: { "Content-Type": "application/json" }
+    });
 
-  setTranslation(response.data.translation_text);
+  setTranslation("data");
+  console.log("respone :",translation);
 };
 
 
 
   function generateTranslation() {
-    fetchTranslation()
+    
     console.log("console at get translation function",messageId)
     console.log("console at get translation function",textElement)
     if (translating || toLanguage === 'Select language') {
-        
+     
         return;
     }
-
+    
     setTranslating(true);
-    // const te="hello"
-    // const { t } = nextTranslate('es');
-    // const translatedText = t('hello');
-    // console.log(translatedText);
-
-    // worker.current!.postMessage({
-    //     text: "hello",
-    //     src_lang: 'eng_Latn',
-    //     tgt_lang: 'pan_Guru'
-    // });
+    console.log('transilation language :',toLanguage)
+    fetchTranslation()
+   
 }
     return (
       <DropdownMenu>
